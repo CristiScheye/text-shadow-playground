@@ -1,0 +1,16 @@
+{
+  "name": "shadow-playground",
+  "version": "1.0.0",
+  "description": "text shadow playground, built with reactjs",
+  "main": "index.js",
+  "dependencies": {
+    "lodash": "^3.8.0",
+    "react": "^0.13.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Cristi Scheye",
+  "license": "ISC"
+}
