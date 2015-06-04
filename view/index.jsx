@@ -19,8 +19,8 @@ export default class View extends Component {
       text: 'Text Shadow Playground'
       , shadow: {
         color: '#000'
-        , offsetX: '1px'
-        , offsetY: '2px'
+        , offsetX: '0.1em'
+        , offsetY: '0.1em'
         , blurRadius: '2px'
       }
       , style: {
@@ -38,13 +38,8 @@ export default class View extends Component {
     let {shadow} = this.state
     let {style} = this.state
 
-    console.log('shadow', shadow)
-    console.log('style', style)
-
     style.textShadow = `${shadow.offsetX} ${shadow.offsetY} ${shadow.blurRadius} ${shadow.color}`
 
-
-    console.log('style', style)
     this.setState({style})
   }
 
@@ -69,15 +64,21 @@ export default class View extends Component {
     let {style} = this.state
     let {shadow} = this.state
 
-    if (field === 'shadowColor') {
-      shadow.color = color
-      this.setState({shadow})
-      this.setShadow()
-    }
-    else {
-      style[field] = color
-    }
+    style[field] = color
     this.setState({style})
+  }
+
+  onShadowChange (field, value) {
+    const {shadow} = this.state
+    // colorpicker sends string, others send event
+    if (field !== 'color') {
+      value = value.target.value + 'em'
+    }
+
+    shadow[field] = value
+    this.setState({shadow})
+    this.setShadow()
+    console.log(this.state)
   }
 
 // subviews
@@ -108,27 +109,59 @@ export default class View extends Component {
       <input onChange={_.bind(this.onChange, this, 'text')} type="text" />
       <ul>{this.fontRadioButtons.call(this)}</ul>
 
-      <h3>Text Color</h3>
-      <ColorPicker
-        className={`${namespace}-textColorPicker`}
-        defaultValue={this.state.style.color}
-        onDrag={_.bind(this.onColorDrag, this, 'color')}/>
+      <h3>Offset-X</h3>
+      <input
+        onChange={_.bind(this.onShadowChange, this, 'offsetX')}
+        type="number"
+        min="-5"
+        max="5"
+        step="0.1"
+        defaultValue="0.1"
+        name="offsetX" />em
 
-      <h3>Background Color</h3>
-      <ColorPicker
-        className={`${namespace}-backgroundColorPicker`}
-        defaultValue={this.state.style.backgroundColor}
-        onDrag={_.bind(this.onColorDrag, this, 'backgroundColor')}/>
+      <h3>Offset-Y</h3>
+      <input
+        onChange={_.bind(this.onShadowChange, this, 'offsetY')}
+        type="number"
+        min="-5"
+        max="5"
+        step="0.1"
+        defaultValue="0.1"
+        name="offsetY" />em
 
-      <h3>Shadow Color</h3>
-      <ColorPicker
-        className={`${namespace}-shadowColorPicker`}
-        defaultValue={this.state.style.shadowColor}
-        onDrag={_.bind(this.onColorDrag, this, 'shadowColor')}/>
+      <h3>Blur Radius</h3>
+      <input
+        onChange={_.bind(this.onShadowChange, this, 'blurRadius')}
+        type="number"
+        min="0"
+        max="5"
+        step="0.1"
+        defaultValue="0.1"
+        name="blurRadius" />em
 
+      <div className={`${namespace}-colorPickerWrapper`}>
+        <h3>Text Color</h3>
+        <ColorPicker
+          defaultValue={this.state.style.color}
+          onDrag={_.bind(this.onColorDrag, this, 'color')}/>
+      </div>
+
+      <div className={`${namespace}-colorPickerWrapper`}>
+        <h3>Background Color</h3>
+        <ColorPicker
+          defaultValue={this.state.style.backgroundColor}
+          onDrag={_.bind(this.onColorDrag, this, 'backgroundColor')}/>
+      </div>
+
+      <div className={`${namespace}-colorPickerWrapper`}>
+        <h3>Shadow Color</h3>
+        <ColorPicker
+          defaultValue={this.state.style.shadowColor}
+          onDrag={_.bind(this.onShadowChange, this, 'color')}/>
+      </div>
 
       <h3>CSS</h3>
-      <p>{JSON.stringify(this.state.style)}</p>
+      <pre><code>{JSON.stringify(this.state.style, null, 2)}</code></pre>
     </div>)
   }
 }
