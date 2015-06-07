@@ -30,6 +30,7 @@ export default class View extends Component {
         , backgroundColor: '#FFF'
         , fontFamily: fontFamilies.serif
       }
+      , activeColor: 'style.color'
     }
 
     this.setShadow()
@@ -77,12 +78,23 @@ export default class View extends Component {
     console.log(this.state)
   }
 
-  onColorDrag (field, color) {
-    let {style} = this.state
-    let {shadow} = this.state
+  onColorDrag (color) {
+    let {activeColor} = this.state
+    let styleOrShadow = activeColor.split('.')[0]
+    let attr = activeColor.split('.')[1]
 
-    style[field] = color
-    this.setState({style})
+    let subState = this.state[styleOrShadow]
+    subState[attr] = color
+
+    this.setState(subState)
+
+    if (styleOrShadow === 'shadow') {
+      this.setShadow()
+    }
+  }
+
+  onClickColor (field) {
+    this.setState({activeColor: field})
   }
 
 
@@ -105,6 +117,24 @@ export default class View extends Component {
     })
   }
 
+  colorBtn (label, color) {
+      let attrs = color.split('.')
+      let style = {
+        backgroundColor: this.state[attrs[0]][attrs[1]]
+      }
+
+      let className = `${namespace}-colorBlock`
+      if (color === this.state.activeColor) {
+        className += ' active'
+      }
+
+      return <div
+                className={className}
+                onClick={this.onClickColor.bind(this, color)}>
+                <span style={style}></span> {label}
+              </div>
+  }
+
   render () {
     return (<div className={namespace}>
       <h1 className={`${namespace}-title`}>Text Shadow Playground</h1>
@@ -116,25 +146,24 @@ export default class View extends Component {
       <input onChange={bind(this.onTextChange, this)} type="text" />
 
       <div className="clearfix">
-        <div className={`${namespace}-otherCSS`}>
-          <div>{this.fontRadioButtons.call(this)}</div>
-          <div className={`${namespace}-colorPickerWrapper`}>
-            <label>Text Color</label>
-            <ColorPicker
-              defaultValue={this.state.style.color}
-              onDrag={bind(this.onColorDrag, this, 'color')}/>
-          </div>
-
-          <div className={`${namespace}-colorPickerWrapper`}>
-            <label>Background Color</label>
-            <ColorPicker
-              defaultValue={this.state.style.backgroundColor}
-              onDrag={bind(this.onColorDrag, this, 'backgroundColor')}/>
-          </div>
+        <div className={`${namespace}-fonts`}>
+          <label>Font Family</label>
+          {this.fontRadioButtons.call(this)}
         </div>
 
+        <div className={`${namespace}-colors`}>
+            <ColorPicker
+              defaultValue={this.state.style.color}
+              onDrag={this.onColorDrag.bind(this)}/>
 
-        <div className={`${namespace}-shadowCSS`}>
+            <div>
+              {this.colorBtn.call(this, 'Text', 'style.color')}
+              {this.colorBtn.call(this, 'Background', 'style.backgroundColor')}
+              {this.colorBtn.call(this, 'Shadow', 'shadow.color')}
+            </div>
+        </div>
+
+        <div className={`${namespace}-shadows`}>
           <label>Offset-X
           <input
             onChange={bind(this.onShadowChange, this, 'offsetX')}
@@ -166,13 +195,6 @@ export default class View extends Component {
             step="0.01"
             defaultValue="0.1"
             name="blurRadius" />em
-
-          <div className={`${namespace}-colorPickerWrapper`}>
-            <label>Shadow Color</label>
-            <ColorPicker
-              defaultValue={this.state.style.shadowColor}
-              onDrag={bind(this.onShadowChange, this, 'color')}/>
-          </div>
         </div>
       </div>
 

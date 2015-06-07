@@ -31,3 +31,25 @@
 .shadowPlayground-colorPickerWrapper {
   /*width: 20%;*/
 }
+
+.shadowPlayground-colors {
+  display: flex;
+}
+
+.shadowPlayground-colorBlock {
+  padding: 0.5em;
+  width: 10em;
+  border: 1px solid black;
+  margin: 0.5em;
+}
+
+.shadowPlayground-colorBlock.active {
+  background: blue;
+}
+
+.shadowPlayground-colorBlock > span {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin-right: 0.5em;
+}
