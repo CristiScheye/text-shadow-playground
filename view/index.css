@@ -6,6 +6,28 @@
   */
 }
 
-.view {
+.clearfix:after {
+  content: "";
+  clear: both;
+  display: table;
+}
 
+.shadowPlayground-demo {
+  font-size: 2em;
+  margin: 0 auto;
+  width: 60%;
+}
+
+.shadowPlayground-otherCSS {
+  width: 50%;
+  float: left;
+}
+
+.shadowPlayground-shadowCSS {
+  width: 40%;
+  float: right;
+}
+
+.shadowPlayground-colorPickerWrapper {
+  /*width: 20%;*/
 }

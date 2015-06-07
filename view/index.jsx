@@ -1,5 +1,7 @@
 import React, {PropTypes, Component} from 'react'
-import _ from 'lodash'
+import bind from 'lodash/function/bind'
+import map from 'lodash/collection/map'
+
 import ColorPicker from 'react-color-picker'
 const namespace = 'shadowPlayground'
 
@@ -44,14 +46,17 @@ export default class View extends Component {
   }
 
 // on change methods
-  onChange (field, e) {
-    var newState = {}
-    newState[field] = e.target.value
+  onTextChange (e) {
+    let text = e.target.value
 
-    this.setState(newState)
+    if (!text.length) {
+      text = 'Text Shadow Playground'
+    }
+
+    this.setState({text})
   }
 
-  onRadioChange (e) {
+  onStyleChange (e) {
     var value = e.target.value
       , name = e.target.name
       , style = this.state.style
@@ -59,15 +64,6 @@ export default class View extends Component {
     style[name] = fontFamilies[value]
     this.setState({style})
   }
-
-  onColorDrag (field, color) {
-    let {style} = this.state
-    let {shadow} = this.state
-
-    style[field] = color
-    this.setState({style})
-  }
-
   onShadowChange (field, value) {
     const {shadow} = this.state
     // colorpicker sends string, others send event
@@ -81,21 +77,30 @@ export default class View extends Component {
     console.log(this.state)
   }
 
+  onColorDrag (field, color) {
+    let {style} = this.state
+    let {shadow} = this.state
+
+    style[field] = color
+    this.setState({style})
+  }
+
+
 // subviews
   fontRadioButtons () {
     var self = this
-    return _.map(fontFamilies, function (_fonts, family){
+    return map(fontFamilies, function (_fonts, family){
       return (
-        <li style={{fontFamily: family}}>
+        <span style={{fontFamily: family}}>
           <input
             type="radio"
             name="fontFamily"
             value={family}
-            onChange={self.onRadioChange.bind(self)}
+            onChange={self.onStyleChange.bind(self)}
           >
             {family}
           </input>
-        </li>
+        </span>
         )
     })
   }
@@ -104,60 +109,71 @@ export default class View extends Component {
     return (<div className={namespace}>
       <h1 className={`${namespace}-title`}>Text Shadow Playground</h1>
 
-      <h2 style={this.state.style}>{this.state.text}</h2>
-
-      <input onChange={_.bind(this.onChange, this, 'text')} type="text" />
-      <ul>{this.fontRadioButtons.call(this)}</ul>
-
-      <h3>Offset-X</h3>
-      <input
-        onChange={_.bind(this.onShadowChange, this, 'offsetX')}
-        type="number"
-        min="-5"
-        max="5"
-        step="0.1"
-        defaultValue="0.1"
-        name="offsetX" />em
-
-      <h3>Offset-Y</h3>
-      <input
-        onChange={_.bind(this.onShadowChange, this, 'offsetY')}
-        type="number"
-        min="-5"
-        max="5"
-        step="0.1"
-        defaultValue="0.1"
-        name="offsetY" />em
-
-      <h3>Blur Radius</h3>
-      <input
-        onChange={_.bind(this.onShadowChange, this, 'blurRadius')}
-        type="number"
-        min="0"
-        max="5"
-        step="0.1"
-        defaultValue="0.1"
-        name="blurRadius" />em
-
-      <div className={`${namespace}-colorPickerWrapper`}>
-        <h3>Text Color</h3>
-        <ColorPicker
-          defaultValue={this.state.style.color}
-          onDrag={_.bind(this.onColorDrag, this, 'color')}/>
+      <div  className={`${namespace}-demo`}>
+        <h2 style={this.state.style}>{this.state.text}</h2>
       </div>
 
-      <div className={`${namespace}-colorPickerWrapper`}>
-        <h3>Background Color</h3>
-        <ColorPicker
-          defaultValue={this.state.style.backgroundColor}
-          onDrag={_.bind(this.onColorDrag, this, 'backgroundColor')}/>
-      </div>
+      <input onChange={bind(this.onTextChange, this)} type="text" />
 
-      <div className={`${namespace}-colorPickerWrapper`}>
-        <h3>Shadow Color</h3>
-        <ColorPicker
-          defaultValue={this.state.style.shadowColor}
-          onDrag={_.bind(this.onShadowChange, this, 'color')}/>
+      <div className="clearfix">
+        <div className={`${namespace}-otherCSS`}>
+          <div>{this.fontRadioButtons.call(this)}</div>
+          <div className={`${namespace}-colorPickerWrapper`}>
+            <label>Text Color</label>
+            <ColorPicker
+              defaultValue={this.state.style.color}
+              onDrag={bind(this.onColorDrag, this, 'color')}/>
+          </div>
+
+          <div className={`${namespace}-colorPickerWrapper`}>
+            <label>Background Color</label>
+            <ColorPicker
+              defaultValue={this.state.style.backgroundColor}
+              onDrag={bind(this.onColorDrag, this, 'backgroundColor')}/>
+          </div>
+        </div>
+
+
+        <div className={`${namespace}-shadowCSS`}>
+          <label>Offset-X
+          <input
+            onChange={bind(this.onShadowChange, this, 'offsetX')}
+            type="number"
+            min="-5"
+            max="5"
+            step="0.01"
+            defaultValue="0.1"
+            name="offsetX" />em
+          </label>
+
+          <label>Offset-Y
+          <input
+            onChange={bind(this.onShadowChange, this, 'offsetY')}
+            type="number"
+            min="-5"
+            max="5"
+            step="0.01"
+            defaultValue="0.1"
+            name="offsetY" />em
+          </label>
+
+          <label>Blur Radius</label>
+          <input
+            onChange={bind(this.onShadowChange, this, 'blurRadius')}
+            type="number"
+            min="0"
+            max="5"
+            step="0.01"
+            defaultValue="0.1"
+            name="blurRadius" />em
+
+          <div className={`${namespace}-colorPickerWrapper`}>
+            <label>Shadow Color</label>
+            <ColorPicker
+              defaultValue={this.state.style.shadowColor}
+              onDrag={bind(this.onShadowChange, this, 'color')}/>
+          </div>
+        </div>
       </div>
 
       <h3>CSS</h3>
