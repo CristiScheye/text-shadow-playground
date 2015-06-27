@@ -23,7 +23,7 @@ export default class View extends Component {
         color: '#000'
         , offsetX: '0.1em'
         , offsetY: '0.1em'
-        , blurRadius: '2px'
+        , blurRadius: '0.1em'
       }
       , style: {
         color: '#000'
@@ -103,7 +103,9 @@ export default class View extends Component {
     var self = this
     return map(fontFamilies, function (_fonts, family){
       return (
-        <span style={{fontFamily: family}}>
+        <label
+          className={`${namespace}-fontInput`}
+          style={{fontFamily: family}}>
           <input
             type="radio"
             name="fontFamily"
@@ -112,7 +114,7 @@ export default class View extends Component {
           >
             {family}
           </input>
-        </span>
+        </label>
         )
     })
   }
@@ -131,75 +133,91 @@ export default class View extends Component {
       return <div
                 className={className}
                 onClick={this.onClickColor.bind(this, color)}>
-                <span style={style}></span> {label}
+                <span style={style}></span>
+                {label}
               </div>
   }
 
   render () {
     return (<div className={namespace}>
-      <h1 className={`${namespace}-title`}>Text Shadow Playground</h1>
-
       <div  className={`${namespace}-demo`}>
-        <h2 style={this.state.style}>{this.state.text}</h2>
+        <h1 style={this.state.style}>{this.state.text}</h1>
       </div>
 
-      <input onChange={bind(this.onTextChange, this)} type="text" />
+      <input
+        className={`${namespace}-textInput`}
+        onChange={bind(this.onTextChange, this)}
+        type="text"
+        placeholder="Your Text Here"/>
 
-      <div className="clearfix">
+      <div className={`${namespace}-fontStyles`}>
         <div className={`${namespace}-fonts`}>
-          <label>Font Family</label>
-          {this.fontRadioButtons.call(this)}
+          <label className={`${namespace}-label--section`}>Font Family</label>
+            {this.fontRadioButtons.call(this)}
         </div>
 
-        <div className={`${namespace}-colors`}>
-            <ColorPicker
-              defaultValue={this.state.style.color}
-              onDrag={this.onColorDrag.bind(this)}/>
+        <div>
+          <label className={`${namespace}-label--section`}>
+            Text Shadow Properties (em)
+          </label>
+          <div className={`${namespace}-shadows`}>
+            <label>Offset-X
+            <input
+              onChange={bind(this.onShadowChange, this, 'offsetX')}
+              type="number"
+              min="-5"
+              max="5"
+              step="0.01"
+              defaultValue="0.1"
+              name="offsetX" />
+            </label>
 
-            <div>
+            <label>Offset-Y
+            <input
+              onChange={bind(this.onShadowChange, this, 'offsetY')}
+              type="number"
+              min="-5"
+              max="5"
+              step="0.01"
+              defaultValue="0.1"
+              name="offsetY" />
+            </label>
+
+            <label>Blur Radius
+              <input
+                onChange={bind(this.onShadowChange, this, 'blurRadius')}
+                type="number"
+                min="0"
+                max="5"
+                step="0.01"
+                defaultValue="0.1"
+                name="blurRadius" />
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <label className={`${namespace}-label--section`}>Colors</label>
+          <div className={`${namespace}-colors`}>
+
+            <div className={`${namespace}-colorLabels`}>
               {this.colorBtn.call(this, 'Text', 'style.color')}
               {this.colorBtn.call(this, 'Background', 'style.backgroundColor')}
               {this.colorBtn.call(this, 'Shadow', 'shadow.color')}
             </div>
+
+            <ColorPicker
+              defaultValue={this.state.style.color}
+              onDrag={this.onColorDrag.bind(this)}/>
+          </div>
         </div>
 
-        <div className={`${namespace}-shadows`}>
-          <label>Offset-X
-          <input
-            onChange={bind(this.onShadowChange, this, 'offsetX')}
-            type="number"
-            min="-5"
-            max="5"
-            step="0.01"
-            defaultValue="0.1"
-            name="offsetX" />em
-          </label>
-
-          <label>Offset-Y
-          <input
-            onChange={bind(this.onShadowChange, this, 'offsetY')}
-            type="number"
-            min="-5"
-            max="5"
-            step="0.01"
-            defaultValue="0.1"
-            name="offsetY" />em
-          </label>
-
-          <label>Blur Radius</label>
-          <input
-            onChange={bind(this.onShadowChange, this, 'blurRadius')}
-            type="number"
-            min="0"
-            max="5"
-            step="0.01"
-            defaultValue="0.1"
-            name="blurRadius" />em
-        </div>
       </div>
 
-      <h3>CSS</h3>
-      <pre><code>{JSON.stringify(this.state.style, null, 2)}</code></pre>
+      <div className={`${namespace}-code`}>
+        <h3>Generated CSS</h3>
+        <pre><code>{JSON.stringify(this.state.style, null, 2)}</code></pre>
+      </div>
     </div>)
   }
 }

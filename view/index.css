@@ -1,55 +1,133 @@
 @import 'react-color-picker';
 
 :root {
-  /* define your namespaced vars here
-  --fontSize-normal-view: 1rem;
-  */
+  --color-active: #AAA;
+  --padding-small: 0.25em;
+  --padding-medium: 0.5em;
+  --padding-large: 1.5em;
 }
 
-.clearfix:after {
-  content: "";
-  clear: both;
-  display: table;
-}
 
 .shadowPlayground-demo {
+  margin: 0 var(--padding-medium) var(--padding-large);
+  padding: var(--padding-large);
+
+  border: 1px solid #BBB;
   font-size: 2em;
+  text-align: center;
+}
+
+.shadowPlayground-demo > h1 {
+  margin: 0;
+  padding: var(--padding-medium);
+}
+
+.shadowPlayground input {
+  margin: var(--padding-small);
+}
+
+.shadowPlayground-label--section {
+  display: block;
+  font-weight: bold;
+}
+
+.shadowPlayground-fontStyles {
+  display: flex;
+  flex-direction: column;
+
   margin: 0 auto;
-  width: 60%;
+  /*min width for color picker*/
+  min-width: 340px;
 }
+input.shadowPlayground-textInput {
+  display: block;
 
-.shadowPlayground-otherCSS {
-  width: 50%;
-  float: left;
-}
-
-.shadowPlayground-shadowCSS {
+  margin: var(--padding-large) auto;
   width: 40%;
-  float: right;
+  min-width: 20em;
 }
 
-.shadowPlayground-colorPickerWrapper {
-  /*width: 20%;*/
+.shadowPlayground-fontInput {
+  display: inline-block;
+  vertical-align: text-top;
+
+  border: 1px solid #111;
+  padding: var(--padding-medium);
+  margin: var(--padding-small);
+
+  line-height: 1em;
+}
+
+.shadowPlayground-fontInput:active,
+.shadowPlayground-fontInput:hover {
+  background-color: var(--color-active);
+  font-weight: bold;
+}
+
+.shadowPlayground-fontInput > input[type=radio] {
+  display: none;
 }
 
 .shadowPlayground-colors {
   display: flex;
+  flex-direction: column;
+}
+
+.shadowPlayground-colorLabels {
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .shadowPlayground-colorBlock {
-  padding: 0.5em;
-  width: 10em;
+  width: 8em;
+  padding: var(--padding-medium);
+  margin: var(--padding-medium);
   border: 1px solid black;
-  margin: 0.5em;
 }
 
 .shadowPlayground-colorBlock.active {
-  background: blue;
+  background: var(--color-active);
 }
 
 .shadowPlayground-colorBlock > span {
   display: inline-block;
   width: 1em;
   height: 1em;
-  margin-right: 0.5em;
+  margin-right: var(--padding-medium);
+}
+
+.shadowPlayground-shadows {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.shadowPlayground-code {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin-top: var(--padding-large);
+
+  border-top: 1px solid #BBB;
+}
+
+@media (min-width: 768px) {
+
+  .shadowPlayground-fontStyles {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  .shadowPlayground-fonts {
+    display: flex;
+    flex-direction: column;
+  }
+  .shadowPlayground-shadows {
+    flex-direction: column;
+  }
+  .shadowPlayground-colors {
+    /*flex-direction: row;*/
+  }
+  .shadowPlayground-colorLabels {
+    /*flex-direction: column;*/
+  }
 }
