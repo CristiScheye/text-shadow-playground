@@ -3,14 +3,18 @@
   "version": "1.0.0",
   "description": "text shadow playground, built with reactjs",
   "main": "index.js",
+  "scripts": {
+    "bundle": "browserify -t babelify src/entry.js | uglifyjs > build/entry.js && rework-npm src/entry.css | cleancss -o build/entry.css"
+  },
   "dependencies": {
     "lodash": "^3.8.0",
     "react": "^0.13.2",
     "react-color-picker": "^2.1.9"
   },
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "devDependencies": {
+    "babelify": "^6.1.2",
+    "clean-css": "^3.3.4",
+    "rework-npm-cli": "^0.1.1"
   },
   "author": "Cristi Scheye",
   "license": "MIT"

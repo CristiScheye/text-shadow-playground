@@ -1,8 +1,8 @@
-import React, {PropTypes, Component} from 'react'
+import React, {Component} from 'react'
+import ColorPicker from 'react-color-picker'
 import bind from 'lodash/function/bind'
 import map from 'lodash/collection/map'
 
-import ColorPicker from 'react-color-picker'
 const namespace = 'shadowPlayground'
 
 const fontFamilies = {
@@ -221,3 +221,4 @@ export default class View extends Component {
     </div>)
   }
 }
+
