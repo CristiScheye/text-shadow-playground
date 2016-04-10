@@ -1,120 +1,61 @@
-@import "react-color-picker";
+.page {
+  font-family: 'Verdana', 'Arial', 'Helvetica', 'sans-serif';
+}
 
-.shadowPlayground-demo {
-  margin: 0 0.5em 1.5em;
-  padding: 1.5em;
-
-  border: 1px solid #BBB;
-  font-size: 2em;
+.demo {
+  font-size: 2.5em;
   text-align: center;
 }
 
-.shadowPlayground-demo > h1 {
+.demo > h1 {
   margin: 0;
   padding: 0.5em;
 }
 
-.shadowPlayground input {
-  margin: 0.25em;
-}
-
-.shadowPlayground-label--section {
-  display: block;
-  font-weight: bold;
-}
-
-.shadowPlayground-fontStyles {
+.playground {
   display: flex;
   flex-direction: column;
+  padding: 1em;
+}
 
+.form {
   margin: 0 auto;
-  /*min width for color picker*/
-  min-width: 340px;
-}
-input.shadowPlayground-textInput {
-  display: block;
-
-  margin: 1.5em auto;
-  width: 40%;
   min-width: 20em;
+  width: 50%;
 }
 
-.shadowPlayground-fontInput {
-  display: inline-block;
-  vertical-align: text-top;
-
-  border: 1px solid #111;
-  padding: 0.5em;
-  margin: 0.25em;
-
-  line-height: 1em;
-}
-
-.shadowPlayground-fontInput:active,
-.shadowPlayground-fontInput:hover {
-  background-color: #AAA);
-  ont-weight: bold;
-}
-
-.shadowPlayground-fontInput > input[type=radio] {
-  display: none;
-}
-
-.shadowPlayground-colors {
+.inputInline {
   display: flex;
-  flex-direction: column;
-}
-
-.shadowPlayground-colorLabels {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.shadowPlayground-colorBlock {
-  width: 8em;
-  padding: 0.5em;
+  justify-content: space-between;
   margin: 0.5em;
-  border: 1px solid black;
 }
 
-.shadowPlayground-colorBlock.active {
-  background: #AAA;
+.input {
+  flex-grow: 1;
+  max-width: 10em;
+
+  /* makes select and input tags same width */
+  -ms-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
-
-.shadowPlayground-colorBlock > span {
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-  margin-right: 0.5em;
+.code {
+  min-width: 20em;
+  margin: 0 0.5em;
+  padding: 0.5em;
+  border: 1px solid #AAA;
+  background-color: #EEE;
 }
 
-.shadowPlayground-shadows {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.shadowPlayground-code {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  margin-top: 1.5em;
-
-  border-top: 1px solid #BBB;
+.fullWidth {
+  width: 100%;
 }
 
 @media (min-width: 768px) {
 
-  .shadowPlayground-fontStyles {
+  .playground {
     flex-direction: row;
-    justify-content: space-around;
-  }
-  .shadowPlayground-fonts {
-    display: flex;
-    flex-direction: column;
-  }
-  .shadowPlayground-shadows {
-    flex-direction: column;
   }
 }
